@@ -1,4 +1,4 @@
-package easy.core
+package easy.core.cards
 
 sealed trait Colour
 

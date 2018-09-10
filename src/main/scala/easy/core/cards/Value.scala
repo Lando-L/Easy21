@@ -1,4 +1,4 @@
-package easy.core
+package easy.core.cards
 
 case class Value(value: Int) extends AnyVal
 

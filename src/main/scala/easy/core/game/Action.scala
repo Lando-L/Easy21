@@ -1,4 +1,4 @@
-package easy.core
+package easy.core.game
 
 sealed trait Action
 

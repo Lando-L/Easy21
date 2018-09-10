@@ -1,4 +1,6 @@
-package easy.core
+package easy.core.policies
+
+import easy.core.game.{Action, Hand}
 
 object DealerPolicyInstances {
 	import Action._
