@@ -3,7 +3,7 @@ package easy.core.cards
 import scala.util.Random
 
 object CardSamplerInstances {
-	implicit def listCardDistribution(implicit random: Random): CardSampler[List[(Card, Double)]] =
+	implicit def listCardSampler(implicit random: Random): CardSampler[List[(Card, Double)]] =
 		new CardSampler[List[(Card, Double)]] {
 			override def sample: List[(Card, Double)] => Option[Card] = {
 				val p = random.nextDouble()

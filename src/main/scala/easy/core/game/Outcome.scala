@@ -1,6 +1,6 @@
 package easy.core.game
 
-sealed abstract class Outcome(reward: Int)
+sealed abstract class Outcome(val reward: Int)
 
 object Outcome {
 	final case object Tie extends Outcome(reward = 0)
