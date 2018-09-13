@@ -1,13 +1,13 @@
 package easy.core.decks
 
-import easy.core.cards.{Card, CardDistribution, Colour}
+import easy.core.cards.{Card, CardDistribution, Suite}
 import easy.core.cards.CardDistributionInstances._
 import easy.core.cards.CardSamplerInstances._
 import org.scalatest.{FlatSpec, Matchers}
 
 class InfiniteDeckSpec extends FlatSpec with Matchers {
 	"draw" should "return a sampled Card and an identical InfiniteDeck instance" in {
-		val distribution = CardDistribution.fromColourDistribution[List[(Card, Double)]](Map(Colour.Black -> 1.0))
+		val distribution = CardDistribution.fromColourDistribution[List[(Card, Double)]](Map(Suite.Black -> 1.0))
 		val deck = InfiniteDeck[List[(Card, Double)]](distribution)
 
 		for {
@@ -15,7 +15,7 @@ class InfiniteDeckSpec extends FlatSpec with Matchers {
 			(optCard, newDeck) = deck.draw
 		}{
 			optCard.nonEmpty shouldBe true
-			optCard.get.suite shouldBe Colour.Black
+			optCard.get.suite shouldBe Suite.Black
 			newDeck shouldEqual deck
 		}
 	}

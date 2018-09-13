@@ -9,7 +9,7 @@ class CardSamplerInstancesSpec extends FlatSpec with Matchers {
 		val distribution = {
 			for {
 				number <- 1 to 5
-				(colour, p) <- Map(Colour.Black -> 0.7, Colour.Red -> 0.3)
+				(colour, p) <- Map(Suite.Black -> 0.7, Suite.Red -> 0.3)
 				value <- Value(number)
 			} yield (Card(value, colour), p / 5)
 		}.toList

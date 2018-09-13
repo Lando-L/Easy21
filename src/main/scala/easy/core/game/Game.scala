@@ -3,8 +3,9 @@ package easy.core.game
 import cats.data.State
 import easy.core.cards.Card
 import easy.core.policies.{DealerPolicy, PlayerPolicy}
+import easy.syntax.PipeSyntax._
 
-class Game(gameRules: GameRules)(dealerPolicy: DealerPolicy, playerPolicy: PlayerPolicy)(initialState: PlayerState) {
+case class Game(gameRules: GameRules)(dealerPolicy: DealerPolicy, playerPolicy: PlayerPolicy)(initialState: PlayerState) {
 	import Action._
 	import Status._
 
@@ -49,8 +50,10 @@ class Game(gameRules: GameRules)(dealerPolicy: DealerPolicy, playerPolicy: Playe
 						}
 				}
 
-				val dealerHand = simulateDealerRec(DealerState(deck, Hand(dealer))).hand
-				gameRules.outcome(dealerHand, playerHand)
+				simulateDealerRec(DealerState(deck, Hand(dealer))) |> {
+					case DealerState(_, hand) =>
+						gameRules.outcome(hand, playerHand)
+				}
 		}
 
 		for {

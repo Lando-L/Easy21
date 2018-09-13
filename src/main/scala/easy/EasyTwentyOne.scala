@@ -3,10 +3,11 @@ package easy
 import easy.core.cards.CardSamplerInstances._
 import easy.core.cards.CardDistributionInstances._
 import easy.core.cards.{Card, CardDistribution}
-import easy.core.cards.Colour._
+import easy.core.cards.Suite._
 import easy.core.decks.InfiniteDeck
 import easy.core.game.{Game, GameRules, Hand, PlayerState}
 import easy.core.policies.{DealerPolicy, DealerPolicyInstances, PlayerPolicy, PlayerPolicyInstances}
+import easy.syntax.PipeSyntax._
 
 object EasyTwentyOne extends App {
 	def cardDistribution: List[(Card, Double)] = {
@@ -22,9 +23,7 @@ object EasyTwentyOne extends App {
 	}
 
 	def rules: GameRules = {
-		hand =>
-			val sum = hand.sum
-			sum < 1 || 21 < sum
+		_.sum |> (sum => sum < 1 || 21 < sum)
 	}
 
 	def playerPolicy: PlayerPolicy = {
@@ -36,8 +35,8 @@ object EasyTwentyOne extends App {
 	}
 
 	def initialState: Option[PlayerState] = {
-		val deck = InfiniteDeck[List[(Card, Double)]](cardDistribution)
-		val blackCardDeck = InfiniteDeck[List[(Card, Double)]](blackCardDistribution)
+		val deck = InfiniteDeck(cardDistribution)
+		val blackCardDeck = InfiniteDeck(blackCardDistribution)
 
 		for {
 			dealer <- blackCardDeck.draw._1
@@ -49,10 +48,9 @@ object EasyTwentyOne extends App {
 		println("Starting game...")
 
 		initialState.foreach {
-			start =>
-				val game = new Game(rules)(dealerPolicy, playerPolicy)(start)
-				val reward = game.run.reward
-				println(reward)
+			(Game.apply(rules)(dealerPolicy, playerPolicy) _)
+				.andThen (_.run.reward)
+				.andThen (println)
 		}
 
 		println("Finishing game...")

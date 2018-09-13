@@ -1,3 +1,3 @@
 package easy.core.cards
 
-case class Card(value: Value, suite: Colour)
+case class Card(value: Value, suite: Suite)

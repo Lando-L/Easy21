@@ -1,11 +1,13 @@
 package easy.core.game
 
 import easy.core.decks.Deck
+import easy.syntax.PipeSyntax._
 
 case class DealerState(deck: Deck, hand: Hand) {
 	def draw: DealerState = {
-		val (newCard, newDeck) = deck.draw
-		val newHand = Hand.draw(newCard)(hand)
-		DealerState(newDeck, newHand)
+		deck.draw |> { case (newCard, newDeck) =>
+			val newHand = Hand.draw(newCard)(hand)
+			DealerState(newDeck, newHand)
+		}
 	}
 }

@@ -1,7 +1,7 @@
 package easy.core.decks
 
 import cats.data.NonEmptyList
-import easy.core.cards.{Card, Colour, Value}
+import easy.core.cards.{Card, Suite, Value}
 import easy.core.decks.FiniteDeck.{EmptyDeck, NonEmptyDeck}
 import org.scalatest.{FlatSpec, Matchers}
 
@@ -15,7 +15,7 @@ class FiniteDeckSpec extends FlatSpec with Matchers {
 	}
 
 	it should "return the last card and an EmptyDeck if the deck had only one card left" in {
-		val lastCard = Card(Value(1).get, Colour.Black)
+		val lastCard = Card(Value(1).get, Suite.Black)
 		val deck = NonEmptyDeck(NonEmptyList(lastCard, Nil))
 		val (optCard, newDeck) = deck.draw
 
@@ -24,8 +24,8 @@ class FiniteDeckSpec extends FlatSpec with Matchers {
 	}
 
 	it should "return the next card and a NonEmptyDeck if the deck had more than one card left" in {
-		val nextCard = Card(Value(1).get, Colour.Black)
-		val cards = NonEmptyList(Card(Value(2).get, Colour.Black), List(Card(Value(3).get, Colour.Red), Card(Value(4).get, Colour.Black)))
+		val nextCard = Card(Value(1).get, Suite.Black)
+		val cards = NonEmptyList(Card(Value(2).get, Suite.Black), List(Card(Value(3).get, Suite.Red), Card(Value(4).get, Suite.Black)))
 		val deck = NonEmptyDeck(NonEmptyList(nextCard, cards.toList))
 		val (optCard, newDeck) = deck.draw
 
