@@ -14,6 +14,13 @@ sealed trait FiniteDeck extends Deck {
 				case c :: cs => (Some(cards.head), NonEmptyDeck(NonEmptyList(c, cs)))
 			}
 	}
+
+	def isEmpty: Boolean = this match {
+		case EmptyDeck => true
+		case NonEmptyDeck(_) => false
+	}
+
+	def nonEmpty: Boolean = !isEmpty
 }
 
 object FiniteDeck {

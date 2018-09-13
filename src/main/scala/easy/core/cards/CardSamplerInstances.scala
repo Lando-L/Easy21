@@ -3,10 +3,11 @@ package easy.core.cards
 import scala.util.Random
 
 object CardSamplerInstances {
-	implicit def listCardSampler(implicit random: Random): CardSampler[List[(Card, Double)]] =
+
+	implicit def listCardSampler: CardSampler[List[(Card, Double)]] =
 		new CardSampler[List[(Card, Double)]] {
 			override def sample: List[(Card, Double)] => Option[Card] = {
-				val p = random.nextDouble()
+				val p = Random.nextDouble()
 
 				def sampleRec(optCard: Option[Card], lowerBound: Double): List[(Card, Double)] => Option[Card] = {
 					case Nil => optCard
@@ -15,7 +16,7 @@ object CardSamplerInstances {
 						optCard match {
 							case Some(card) => Some(card)
 							case None if p <= upperBound => Some(c)
-							case _ => sampleRec(None, upperBound)(cs)
+							case None => sampleRec(None, upperBound)(cs)
 						}
 				}
 

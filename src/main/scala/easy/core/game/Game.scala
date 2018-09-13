@@ -15,10 +15,10 @@ class Game(gameRules: GameRules)(dealerPolicy: DealerPolicy, playerPolicy: Playe
 		def simulateGame: GameState[Outcome] = for {
 			action <- State.inspect[PlayerState, Action] { case PlayerState(_, dealer, player) => playerPolicy.nextAction(dealer, player) }
 			status <- step(action)
-			outcome <- State.pure(status match {
-				case Running => Outcome.Tie
-				case Over(outcome) => outcome
-			})
+			outcome <- status match {
+				case Over(outcome) => State.pure[PlayerState, Outcome](outcome)
+				case Running => simulateGame
+			}
 		} yield outcome
 
 		simulateGame.runA(initialState).value
@@ -39,7 +39,7 @@ class Game(gameRules: GameRules)(dealerPolicy: DealerPolicy, playerPolicy: Playe
 			case PlayerState(deck, dealer, playerHand) =>
 				def simulateDealerRec: DealerState => DealerState = {
 					dealerState =>
-						GameRules.status(dealerState.hand) match {
+						gameRules.status(dealerState.hand) match {
 							case Over(_) => dealerState
 							case Running =>
 								dealerPolicy.nextAction(dealerState.hand) match {
